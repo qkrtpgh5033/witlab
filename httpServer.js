@@ -10,7 +10,7 @@ function getConnection()
     var recvData = [];  
     client = net_client.connect({port: 8888, host:'192.168.100.20'}, function() {
      
-        console.log("connect log======================================================================"); 
+        console.log("connect log====================================================================="); 
         console.log('connect success'); 
         console.log('local = ' + this.localAddress + ':' + this.localPort); 
         console.log('remote = ' + this.remoteAddress + ':' +this.remotePort); 
