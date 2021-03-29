@@ -1,9 +1,8 @@
 var http = require('http');
 var fs = require('fs');
 var url = require('url');
-
 var net_client = require('net');  // 클라이언트
-
+var flag = false;
 function getConnection()
 {
     var client = "";
@@ -30,9 +29,12 @@ function getConnection()
  
 // 데이터 수신 후 처리 
     client.on('data', function(data) { 
-        if(data == 'nodejs')
+        if(data == 'sucess')
         {
+            flag = true;
             console.log('sucess!!!@@@@@@@@@@@@@')
+            
+    
         }
         console.log("data recv log=================================================================="); 
         recvData.push(data); 
@@ -63,6 +65,10 @@ function getConnection()
     return client;
 }
 
+
+getConnection();
+
+
 var app = http.createServer(function (request, response) {
     
 
@@ -71,20 +77,33 @@ var app = http.createServer(function (request, response) {
     var title = queryData.id;
 
     var list;
-  
     
+  
+ 
+    if(flag)
+    {
+        console.log('test@@@@@@@@@@@@@@@@@@@@');
+        request.url = '/sucess.html';
+        flag = false;
+    }
+    else{
+        console.log('fail@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@');
+    }
+
     if (request.url == '/') {
         _url = '/index.html';
+       
     }
     
     if(request.url == '/favicon.ico'){
         
         return response.writeHead(404);
     }
-    
+
+
     if (request.url == '/sucess.html') {
         
-        getConnection();
+        console.log('hihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihi');
 
         var template;
         console.log(request.url);
