@@ -42,6 +42,7 @@ function getConnection()
                 console.log('현재 여기 ');
                 // 클라이언트에게 전달
                 ws_user.send(data);
+                flag = true;
             }
         });
     
@@ -93,126 +94,134 @@ var app = http.createServer(function (request, response) {
 
 
     if (request.url == '/sucess.html') {
-
-        var template;
-        console.log(request.url);
-        fs.readdir('./video/', function (error, filelist) {
+        if(flag)
+        {   
+            flag = false;
+            var template;
+            console.log(request.url);
+            fs.readdir('./video/', function (error, filelist) {
+        
+                var i = 0;
+                while (i < filelist.length) {
+        
+                    list = list + '<tr>';
+                    list = list + '<th onClick = " test(this);">' + filelist[i]+ '</th>';
     
-            var i = 0;
-            while (i < filelist.length) {
+                    var day = filelist[i].split("_")[0];
+                    list = list + '<th>' + day + '</th>';
     
-                list = list + '<tr>';
-                list = list + '<th onClick = " test(this);">' + filelist[i]+ '</th>';
-
-                var day = filelist[i].split("_")[0];
-                list = list + '<th>' + day + '</th>';
-
-                var slide = filelist[i].split("_")[1].split(".")[0];
-                var time = slide.split("-");
-                var hour = time[0]+"시";
-                var min = time[1]+"분";
-                var sec = time[2]+"초";
-                list = list + '<th>' + hour+min+sec + '</th>';
-    
-                i = i + 1
-                list = list + '</tr>';
-    
-            }
-    
-            list = list.split("undefined")[1];
-            template = `
-          <!DOCTYPE html>
-    <html>
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <link rel="stylesheet" href="http://210.102.142.15:3000/bootstrap">
-        <link rel="stylesheet" href="http://210.102.142.15:3000/sucess_css">
-    </head>
-    
-     
-    
-    <body>
-    
-    
-         <header>
-             <Image id="camera_img" src="http://210.102.142.15:3000/image_test"></Image> 
-             <p class = "neon">BLACK BOX</p>
-        </header>
-    
-    
-        <section>
-    
-            <div id = 'vi'>
-                <p class = 'title'> 2021년 03월 17일 11시 42분 26초 </p>
-                <video id ='test'  src = "http://210.102.142.15:3000/video/2021-03-17_11-42-26.mp4" controls> </video>
-            </div>
-            <div id = 'tb'>
-                <table class="table table-bordered table-dark">
-    
-                    <thead>
-                        <td class ='Playlist' colspan="3"> 재생목록</td>
-                    </thead>
-                    <tbody>
-                    <th class = 'name' scope="col">파일 이름</th>
-                    <th class = 'name' scope="col">날짜</th>
-                    <th class = 'name' scope="col">시간</th>
-    
-                        ${list}
-    
-                    </tbody>
-                </table>
-            </div>
-        </section>
-    
-           <script type="text/javascript">
-    
-                function test(obj){
-    
-                 
-                    var j=document.getElementsByClassName("selected");
-                    for(var i=0;i<j.length;i++){
-                        j[i].className="";
-                        }  
-                    
-    
-                    obj.className="selected";
-                    
-                    var filename=obj.innerHTML;
-    
-                    console.log(filename);
-                    document.getElementById("test").src = "http://210.102.142.15:3000/video/"+filename;
-                    console.log(document.getElementById("test").src);
-                    
-                    
-                    slice(filename);
+                    var slide = filelist[i].split("_")[1].split(".")[0];
+                    var time = slide.split("-");
+                    var hour = time[0]+"시";
+                    var min = time[1]+"분";
+                    var sec = time[2]+"초";
+                    list = list + '<th>' + hour+min+sec + '</th>';
+        
+                    i = i + 1
+                    list = list + '</tr>';
+        
                 }
-                
-                function slice(str)
-                {
-                    var slice = [];
-                    slice = str.split("_");
-                    var y = slice[0].split("-")[0];
-                    var month = slice[0].split("-")[1];
-                    var d = slice[0].split("-")[2];
-                    var h = slice[1].split("-")[0];
-                    var min = slice[1].split("-")[1];
-                    var s = slice[1].split("-")[2].split(".")[0];
-                    var x = document.getElementsByClassName("title")[0];
-                    x.innerText=(y+"년 "+month+"월 " +d+"일       " + h+"시 "+ min+"분 "+s +"초" );
+        
+                list = list.split("undefined")[1];
+                template = `
+              <!DOCTYPE html>
+        <html>
+        <head>
+            <meta charset="utf-8">
+            <meta http-equiv="X-UA-Compatible" content="IE=edge">
+            <link rel="stylesheet" href="http://210.102.142.15:3000/bootstrap">
+            <link rel="stylesheet" href="http://210.102.142.15:3000/sucess_css">
+        </head>
+        
+         
+        
+        <body>
+        
+        
+             <header>
+                 <Image id="camera_img" src="http://210.102.142.15:3000/image_test"></Image> 
+                 <p class = "neon">BLACK BOX</p>
+            </header>
+        
+        
+            <section>
+        
+                <div id = 'vi'>
+                    <p class = 'title'> 2021년 03월 17일 11시 42분 26초 </p>
+                    <video id ='test'  src = "http://210.102.142.15:3000/video/2021-03-17_11-42-26.mp4" controls> </video>
+                </div>
+                <div id = 'tb'>
+                    <table class="table table-bordered table-dark">
+        
+                        <thead>
+                            <td class ='Playlist' colspan="3"> 재생목록</td>
+                        </thead>
+                        <tbody>
+                        <th class = 'name' scope="col">파일 이름</th>
+                        <th class = 'name' scope="col">날짜</th>
+                        <th class = 'name' scope="col">시간</th>
+        
+                            ${list}
+        
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        
+               <script type="text/javascript">
+        
+                    function test(obj){
+        
+                     
+                        var j=document.getElementsByClassName("selected");
+                        for(var i=0;i<j.length;i++){
+                            j[i].className="";
+                            }  
+                        
+        
+                        obj.className="selected";
+                        
+                        var filename=obj.innerHTML;
+        
+                        console.log(filename);
+                        document.getElementById("test").src = "http://210.102.142.15:3000/video/"+filename;
+                        console.log(document.getElementById("test").src);
+                        
+                        
+                        slice(filename);
+                    }
                     
-                }
-    
-            </script>
-    
-        <script src="js/jquery.min.js.js"></script>
-        <script src="js/bootstrap.min.js"></script>
-    
-    </body></html>
-          `
-          
-          response.end(template);
-        });
+                    function slice(str)
+                    {
+                        var slice = [];
+                        slice = str.split("_");
+                        var y = slice[0].split("-")[0];
+                        var month = slice[0].split("-")[1];
+                        var d = slice[0].split("-")[2];
+                        var h = slice[1].split("-")[0];
+                        var min = slice[1].split("-")[1];
+                        var s = slice[1].split("-")[2].split(".")[0];
+                        var x = document.getElementsByClassName("title")[0];
+                        x.innerText=(y+"년 "+month+"월 " +d+"일       " + h+"시 "+ min+"분 "+s +"초" );
+                        
+                    }
+        
+                </script>
+        
+            <script src="js/jquery.min.js.js"></script>
+            <script src="js/bootstrap.min.js"></script>
+        
+        </body></html>
+              `
+              
+              response.end(template);
+            });
+        }
+        else
+        {
+            response.end(404);
+        }
+       
 
         return;
     }
