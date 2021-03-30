@@ -1,109 +1,98 @@
 var http = require('http');
 var fs = require('fs');
 var url = require('url');
-var net_client = require('net');  // 클라이언트
+var net = require('net');  // 서버
 var flag = false;
+
+/* 웹 소켓 */
+const WebSocket = require("ws");
+const wss = new WebSocket.Server({port:2000});
+var ws_user;
+
+// 먼저 웹 소켓을 열어서 연결시킴 
+wss.on("connection", function(ws) {
+    ws.send("Hello");
+    ws_user=ws;
+    ws.on("message", function(msg){
+        console.log('ws : '+msg);
+    })
+});
+
+getConnection();
+
 function getConnection()
 {
-    var client = "";
-    var recvData = [];  
-    client = net_client.connect({port: 8888, host:'192.168.100.20'}, function() {
-     
-        console.log("connect log====================================================================="); 
-        console.log('connect success'); 
-        console.log('local = ' + this.localAddress + ':' + this.localPort); 
-        console.log('remote = ' + this.remoteAddress + ':' +this.remotePort); 
-     
-        local_port = this.localPort; 
-     
-        this.setEncoding('utf8'); 
-        this.setTimeout(600000); // timeout : 10분 
-        console.log("client setting Encoding:binary, timeout:600000" ); 
-        console.log("client connect localport : " + local_port);
-    }); 
- 
-    // 접속 종료 시 처리 
-    client.on('close', function() { 
-        console.log("client Socket Closed : " + " localport : " + local_port); 
-    }); 
- 
-// 데이터 수신 후 처리 
-    client.on('data', function(data) { 
-        if(data == 'sucess')
-        {
-            flag = true;
-            console.log('sucess!!!@@@@@@@@@@@@@')
-            
     
-        }
-        console.log("data recv log=================================================================="); 
-        recvData.push(data); 
-        console.log("data.length : " + data.length);
-        console.log("data recv : " + data);
-        client.end();
-    }); 
- 
-    client.on('end', function() { 
-        console.log('client Socket End'); 
-    }); 
-     
-    client.on('error', function(err) { 
-        console.log('client Socket Error: '+ JSON.stringify(err)); 
-    }); 
-     
-    client.on('timeout', function() { 
-        console.log('client Socket timeout: '); 
-    }); 
-     
-    client.on('drain', function() { 
-        console.log('client Socket drain: '); 
-    }); 
-     
-    client.on('lookup', function() { 
-        console.log('client Socket lookup: '); 
-    });  
-    return client;
+    const ipaddr = '192.168.100.44';    // ip
+    const port = 8000;  // 포트번호 
+
+    const server = net.createServer(function (socket) {
+        console.log(socket.address().address + " connected.");
+    
+        // setting encoding
+        socket.setEncoding('utf8');
+    
+
+        // print data from client
+        socket.on('data', function (data) {
+
+            // 라즈베리 파이로부터 'sucess' 응답이 올 경우 
+            if(data == 'sucess')
+            {
+                console.log('현재 여기 ');
+                // 클라이언트에게 전달
+                ws_user.send(data);
+            }
+        });
+    
+        // send message to client
+        setTimeout(() => {
+            socket.write('welcome to server');
+        }, 5000000);
+        
+        setTimeout(() => {
+            socket.destroy();
+        }, 6000000);
+    });
+    
+    // print error message
+    server.on('error', function (err) {
+        console.log('err: ', err.code);
+    });
+    // listening
+    server.listen(port, ipaddr, function () {
+        console.log('listening on ' + port +'.......');
+
+          // print message for disconnection with client
+          server.on('close', function () {
+            console.log('client disconnted.');
+        }, 50000000);
+    });
 }
 
 
-getConnection();
+console.log('start');
 
 
 var app = http.createServer(function (request, response) {
     
+    console.log('request : ' + request.url);
 
     var _url = request.url;
     var queryData = url.parse(_url, true).query;
     var title = queryData.id;
-
     var list;
-    
-  
- 
-    if(flag)
-    {
-        console.log('test@@@@@@@@@@@@@@@@@@@@');
-        request.url = '/sucess.html';
-        flag = false;
-    }
-    else{
-        console.log('fail@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@');
-    }
 
     if (request.url == '/') {
         _url = '/index.html';
-       
     }
     
-    if(request.url == '/favicon.ico'){
-        
+    if(request.url == '/favicon.ico'){        
         return response.writeHead(404);
     }
 
 
     if (request.url == '/sucess.html') {
-        
-        console.log('hihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihihi');
 
         var template;
         console.log(request.url);
@@ -113,11 +102,9 @@ var app = http.createServer(function (request, response) {
             while (i < filelist.length) {
     
                 list = list + '<tr>';
-                
                 list = list + '<th onClick = " test(this);">' + filelist[i]+ '</th>';
-                
+
                 var day = filelist[i].split("_")[0];
-                
                 list = list + '<th>' + day + '</th>';
 
                 var slide = filelist[i].split("_")[1].split(".")[0];
