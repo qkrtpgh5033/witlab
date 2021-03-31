@@ -1,0 +1,172 @@
+header {
+    
+    text-align: center;
+    height: 240px;
+    border-bottom: 2px solid rgb(19, 184, 250);
+}
+/* .copy-box .line
+{
+    position: absolute;
+  background-color: aqua;
+  box-shadow: 0px 0px 12px aqua;
+  width: 4px;
+  height: calc(100% - 20px);
+  top: 10px;
+  left: 22px;
+  border-radius: 50%;
+  overflow: hidden;
+} */
+
+
+@keyframes scanner-loop
+{
+  0% 
+  {
+    top: 0;
+  }
+  50%
+  {
+    top: 100%;
+  }
+  100%
+  {
+    top: 0;
+  }
+}
+.copy-box .inner 
+{
+  padding: 30px;
+}
+table {
+    width: 100%;
+    text-align: center;
+ 
+}
+
+html,
+body {
+    
+    background-color: black;
+
+    background-repeat: no-repeat;
+    background-size: cover;
+    color: azure;
+}
+/* body ::before{
+    content: "";
+    display: block;
+    position: absolute;
+    z-index: -1;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background-color: rgba(0,0,0,0.65);
+} */
+#video {
+    float: left
+}
+
+#vi
+{
+    padding-top: 30px;
+    float: left; padding-left: 7.5%; width : 75%; height: 750px;
+    
+    background-image: url('images/bg-20.jpg');
+    /* /* background-size: cover; */
+    background-size: 85% 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+#tb
+{
+    float: left; border-left: 2px solid  rgb(19, 184, 250); width : 25%; height : 800px
+}
+#test
+{
+    margin-top : 10px;
+    margin-left: 140px;   
+    width: 850px;
+    
+}
+.title
+{
+    text-align: center;
+    font-size: 35px;
+    padding-top : 50px;
+    padding-right: 70px;
+    text-shadow: 0px 0px 20px #0073e6,
+    0px 0px 10px rgb(204, 236, 60);
+}
+.name
+{
+    font-size : 25px;
+
+}
+.Playlist {
+
+    position: relative;
+    font-size: 2em;
+    color: #fff;
+    letter-spacing: 10px;
+    animation: flicker 1.5s infinite alternate;   
+    box-shadow: 0 0 6px #0073e6, 0 0 12px #0073e6, inset 0 0 1px #0073e6, inset 0 0 2px #0073e6, inset 0 0 6px #0073e6, inset 0 0 12px #0073e6;
+    text-shadow: 0px 0px 20px #1e08e0,
+                   0px 0px 10px rgb(19, 184, 250);
+            
+  }
+
+ .selected{
+  color: #fb4e42;
+  font-size : 16px;
+  line-height: 1vw;
+}
+
+    @font-face {
+        font-family: neon;
+        src: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/707108/neon.ttf);
+      }
+
+
+      @import url('https://fonts.googleapis.com/css?family=Warnes&display=swap');
+      .neon {
+        font-size: 40px;
+        text-align: center;
+        font-family: 'Warnes', cursive;
+        color: #fff;
+        text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #0073e6, 0 0 20px #0073e6, 0 0 25px #0073e6, 0 0 30px #0073e6, 0 0 35px #0073e6;
+    }
+    
+    @keyframes neon {
+        0%,
+        100% {
+            text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #0073e6, 0 0 20px #0073e6, 0 0 25px #0073e6, 0 0 30px #0073e6, 0 0 35px #0073e6;
+          color: #222;
+        }
+        80% {
+          text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #0073e6, 0 0 20px #0073e6, 0 0 25px #0073e6, 0 0 30px #0073e6, 0 0 35px #0073e6;
+          color: #000000;
+        }
+      }
+      .neon {
+        animation: neon 1s ease infinite;
+        -moz-animation: neon 1s ease infinite;
+        -webkit-animation: neon 1s ease infinite;
+      }
+      
+
+      /* Animate neon flicker */
+@keyframes Playlist {
+    0%,
+        100% {
+            text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #0073e6, 0 0 20px #0073e6, 0 0 25px #0073e6, 0 0 30px #0073e6, 0 0 35px #0073e6;
+          color: #222;
+        }
+        80% {
+          text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #0073e6, 0 0 20px #0073e6, 0 0 25px #0073e6, 0 0 30px #0073e6, 0 0 35px #0073e6;
+          color: #000000;
+        }
+    }
+   
+        
