@@ -7,19 +7,21 @@ var flag = false;
 /* 웹 소켓 */
 const WebSocket = require("ws");
 const wss = new WebSocket.Server({port:2000});
-var ws_user;
+var ws_user;    // 웹 소켓용 변수
 
 // 먼저 웹 소켓을 열어서 연결시킴 
 wss.on("connection", function(ws) {
-    ws.send("Hello");
+    ws.send("Hello client");
     ws_user=ws;
     ws.on("message", function(msg){
-        console.log('ws : '+msg);
+        console.log('client : '+msg);
     })
 });
 
 getConnection();
 
+
+// TCP 통신 ( 라즈베리 파이 ) 
 function getConnection()
 {
     
@@ -139,8 +141,13 @@ var app = http.createServer(function (request, response) {
         
         
              <header>
-                 <Image id="camera_img" src="http://210.102.142.15:3000/image_test"></Image> 
+                <div class = 'copy-box'> 
+
+                   <Image id="camera_img" src="http://210.102.142.15:3000/test5.png"></Image> 
                  <p class = "neon">BLACK BOX</p>
+         
+                </div>
+
             </header>
         
         
@@ -219,7 +226,7 @@ var app = http.createServer(function (request, response) {
         }
         else
         {
-            response.end(404);
+            response.writeHead(404);
         }
        
 
@@ -276,8 +283,6 @@ var app = http.createServer(function (request, response) {
             response.end();
         });
 
-
-
         return;
     }
 
@@ -308,9 +313,9 @@ var app = http.createServer(function (request, response) {
 
         return;
     }
-
     response.writeHead(200);
     console.log(_url);
     response.end(fs.readFileSync(__dirname + _url));
+    
 });
 app.listen(3000);
